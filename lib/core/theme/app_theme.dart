@@ -26,7 +26,7 @@ class AppTheme {
         elevation: elevation.medium,
         titleTextStyle: typography.h6.copyWith(color: colors.onPrimary),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: colors.surface,
         elevation: elevation.small,
         shape: RoundedRectangleBorder(
@@ -88,7 +88,7 @@ class AppTheme {
         elevation: elevation.medium,
         titleTextStyle: typography.h6.copyWith(color: colors.onPrimaryDark),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: colors.surfaceDark,
         elevation: elevation.small,
         shape: RoundedRectangleBorder(

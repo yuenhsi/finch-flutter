@@ -87,16 +87,22 @@ class PetGrowthStageAdapter extends TypeAdapter<PetGrowthStage> {
     switch (obj) {
       case PetGrowthStage.egg:
         writer.writeByte(0);
+        break;
       case PetGrowthStage.baby:
         writer.writeByte(1);
+        break;
       case PetGrowthStage.toddler:
         writer.writeByte(2);
+        break;
       case PetGrowthStage.child:
         writer.writeByte(3);
+        break;
       case PetGrowthStage.teenager:
         writer.writeByte(4);
+        break;
       case PetGrowthStage.adult:
         writer.writeByte(5);
+        break;
     }
   }
 
@@ -134,10 +140,13 @@ class GenderAdapter extends TypeAdapter<Gender> {
     switch (obj) {
       case Gender.male:
         writer.writeByte(0);
+        break;
       case Gender.female:
         writer.writeByte(1);
+        break;
       case Gender.other:
         writer.writeByte(2);
+        break;
     }
   }
 

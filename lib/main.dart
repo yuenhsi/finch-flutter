@@ -79,7 +79,8 @@ Future<void> main() async {
 
   await secondaryInitializationSteps();
   runApp(
-    DevicePreview(enabled: false, builder: (context) => const BirdoTasks()),
+    // DevicePreview(enabled: false, builder: (context) => const BirdoTasks()),
+    DevicePreview(enabled: true, builder: (context) => const BirdoTasks()),
   );
 }
 

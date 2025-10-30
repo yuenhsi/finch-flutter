@@ -83,12 +83,16 @@ class TaskCategoryAdapter extends TypeAdapter<TaskCategory> {
     switch (obj) {
       case TaskCategory.selfCare:
         writer.writeByte(0);
+        break;
       case TaskCategory.productivity:
         writer.writeByte(1);
+        break;
       case TaskCategory.exercise:
         writer.writeByte(2);
+        break;
       case TaskCategory.mindfulness:
         writer.writeByte(3);
+        break;
     }
   }
 

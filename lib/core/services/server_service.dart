@@ -5,7 +5,7 @@ const String _serverUrl = 'http://localhost:5000';
 //! IMPORTANT: This flag should be toggled based on if your interview needs
 //! to use any features that interact with the server.
 //! If set to false, all requests to the server just succeed with fake data.
-const bool enableServer = false;
+const bool enableServer = true;
 
 typedef JSON = Map<String, dynamic>;
 
