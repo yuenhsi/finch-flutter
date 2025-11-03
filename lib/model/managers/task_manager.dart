@@ -115,21 +115,32 @@ class TaskManager extends BaseManager {
     String title,
     int energyReward,
     TaskCategory category,
-    TaskCadence cadence, {
+    TaskCadence? cadence, {
     DateTime? date,
   }) async {
     debugPrint('TaskManager: Creating task: $title');
     try {
       final targetDate = date ?? _currentDay;
-      final task = await TaskService.createTask(
-        title: title,
-        energyReward: energyReward,
-        category: category,
-        cadence: cadence,
-        date: targetDate,
-      );
-      debugPrint('TaskManager: Created task: ${task.title} (${task.id})');
+      if (cadence == null || cadence == TaskCadence.never) {
+        final task = await TaskService.createTask(
+            title: title,
+            energyReward: energyReward,
+            category: category,
+            cadence: cadence ?? TaskCadence.never,
+            date: targetDate,
+        );
+          debugPrint('TaskManager: Created task: ${task.title} (${task.id})');
+      } else {
+        final task = await TaskService.createRecurringTask(
+            title: title,
+            energyReward: energyReward,
+            category: category,
+            cadence: cadence,
+            date: targetDate,
+        );
+        debugPrint('TaskManager: Created task: ${task.title} (${task.id})');
 
+      }
       if (_isTimeTravel || date != null) {
         await loadTasksForDay(targetDate);
       } else {

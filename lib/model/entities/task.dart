@@ -28,6 +28,9 @@ class Task extends HiveObject {
   @HiveField(7)
   final DateTime createdDate;
 
+  @HiveField(8)
+  String? referenceId;
+
   Task({
     required this.id,
     required this.title,
@@ -37,6 +40,7 @@ class Task extends HiveObject {
     this.completedAt,
     required this.category,
     DateTime? createdDate,
+    this.referenceId,
   }) : createdDate = createdDate ?? DateTime.now();
 
   factory Task.create({
@@ -44,6 +48,7 @@ class Task extends HiveObject {
     required int energyReward,
     required TaskCategory category,
     required TaskCadence cadence,
+    String? referenceId,
   }) {
     final now = DateTime.now();
     return Task(
@@ -53,6 +58,7 @@ class Task extends HiveObject {
       category: category,
       cadence: cadence,
       createdDate: now,
+      referenceId: referenceId,
     );
   }
 
