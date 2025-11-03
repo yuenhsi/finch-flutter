@@ -96,6 +96,16 @@ class HomeController extends BaseController {
         await _dayManager.addRainbowStones(goalCompletionReward);
       }
 
+      if (task.cadence != TaskCadence.never) {
+        // For recurring tasks, create a new instance for the next occurrence
+        // This isn't working -- seems like this has to be done from the TaskController? 
+        int streakBonus = task.energyReward - 5;
+        await _rainbowStonesManager.awardTaskCompletionStones(
+          streakBonus,
+        );
+        await _dayManager.addRainbowStones(streakBonus);
+      }
+
       // Check if pet is ready to evolve
       if (_petManager.isReadyToEvolve) {
         debugPrint('HomeController: Pet is ready to evolve!');

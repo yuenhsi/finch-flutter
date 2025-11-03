@@ -92,12 +92,18 @@ class TaskService {
         t.createdDate.month,
         t.createdDate.day,
       );
+      final bonus =
+          allTasks
+              .where((task) => task.referenceId == t.id && task.isCompleted)
+              .toList()
+              .length;
+
       switch (t.cadence) {
         case TaskCadence.daily:
           if (!currentDayTaskIds.contains(t.id)) {
             await createTask(
               title: t.title,
-              energyReward: t.energyReward,
+              energyReward: t.energyReward + bonus,
               category: t.category,
               cadence: TaskCadence.never,
               referenceId: t.id,
@@ -109,7 +115,7 @@ class TaskService {
             if (!currentDayTaskIds.contains(t.id)) {
               await createTask(
                 title: t.title,
-                energyReward: t.energyReward,
+                energyReward: t.energyReward + bonus,
                 category: t.category,
                 cadence: TaskCadence.never,
                 referenceId: t.id,
@@ -123,7 +129,7 @@ class TaskService {
             if (!currentDayTaskIds.contains(t.id)) {
               await createTask(
                 title: t.title,
-                energyReward: t.energyReward,
+                energyReward: t.energyReward + bonus,
                 category: t.category,
                 cadence: TaskCadence.never,
                 referenceId: t.id,
@@ -193,7 +199,6 @@ class TaskService {
       'TaskService: Creating task: ${task.title} (${task.id}) for date: ${ServiceLocator.dateTimeService.generateDayId(targetDate)}',
     );
     saveTask(task);
-
 
     final todayTask = Task.create(
       title: title,
