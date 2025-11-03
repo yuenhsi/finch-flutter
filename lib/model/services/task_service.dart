@@ -75,16 +75,50 @@ class TaskService {
     return getTasksForDay(currentDate);
   }
 
+  static Future<void> addRecurringTasksToCurrentDay() async {
+    debugPrint('TaskService: Getting recurring tasks');
+    final box = _getBox();
+    final allTasks = box.values.toList();
+    final recurring = allTasks.where((t) => t.cadence != TaskCadence.never).toList();
+    final currentDate = ServiceLocator.dateTimeService.getCurrentDate();
+
+    debugPrint('TaskService: Found ${recurring.length} recurring tasks');
+    for (final t in recurring) {
+        final createdDate = DateTime(t.createdDate.year, t.createdDate.month, t.createdDate.day);
+        switch (t.cadence) {
+        case TaskCadence.daily:
+            await DayService.maybeAddTaskToDay(currentDate, t);
+            break;
+        case TaskCadence.weekly:
+            if (ServiceLocator.dateTimeService.isToday(createdDate) ||
+                currentDate.difference(createdDate).inDays % 7 == 0) {
+              await DayService.maybeAddTaskToDay(currentDate, t);
+            }
+            break;
+        case TaskCadence.monthly:
+            if (ServiceLocator.dateTimeService.isToday(createdDate) ||
+                (currentDate.day == createdDate.day)) {
+              await DayService.maybeAddTaskToDay(currentDate, t);
+            }
+            break;
+        default:
+            continue;
+        }
+    }
+  }
+
   static Future<Task> createTask({
     required String title,
     required int energyReward,
     required TaskCategory category,
+    required TaskCadence cadence,
     DateTime? date,
   }) async {
     final task = Task.create(
       title: title,
       energyReward: energyReward,
       category: category,
+      cadence: cadence,
     );
 
     final targetDate = date ?? ServiceLocator.dateTimeService.getCurrentDate();

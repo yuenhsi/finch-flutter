@@ -143,6 +143,25 @@ class DayManager extends BaseManager {
     }
   }
 
+  Future<void> maybeAddTaskToDay(Task task) async {
+    if (_currentDay == null) {
+      debugPrint('DayManager: No current day to add task to');
+      return;
+    }
+
+    debugPrint('DayManager: Adding task ${task.id} to current day');
+    try {
+      final currentDate = _dateTimeService.getCurrentDate();
+      await DayService.maybeAddTaskToDay(currentDate, task);
+      await loadCurrentDay();
+
+      debugPrint('DayManager: Task added to day successfully');
+      notifyListeners();
+    } catch (e) {
+      debugPrint('DayManager: Error adding task to day: $e');
+    }
+  }
+
   Future<void> completeTask(String taskId) async {
     if (_currentDay == null) {
       debugPrint('DayManager: No current day to complete task for');

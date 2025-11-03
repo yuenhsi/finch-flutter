@@ -20,6 +20,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       id: fields[0] as String,
       title: fields[1] as String,
       energyReward: (fields[3] as num).toInt(),
+      cadence: fields[2] == null ? TaskCadence.never : fields[2] as TaskCadence,
       isCompleted: fields[4] == null ? false : fields[4] as bool,
       completedAt: fields[5] as DateTime?,
       category: fields[6] as TaskCategory,
@@ -30,11 +31,13 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.cadence)
       ..writeByte(3)
       ..write(obj.energyReward)
       ..writeByte(4)
@@ -83,16 +86,12 @@ class TaskCategoryAdapter extends TypeAdapter<TaskCategory> {
     switch (obj) {
       case TaskCategory.selfCare:
         writer.writeByte(0);
-        break;
       case TaskCategory.productivity:
         writer.writeByte(1);
-        break;
       case TaskCategory.exercise:
         writer.writeByte(2);
-        break;
       case TaskCategory.mindfulness:
         writer.writeByte(3);
-        break;
     }
   }
 
@@ -103,6 +102,51 @@ class TaskCategoryAdapter extends TypeAdapter<TaskCategory> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is TaskCategoryAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class TaskCadenceAdapter extends TypeAdapter<TaskCadence> {
+  @override
+  final int typeId = 10;
+
+  @override
+  TaskCadence read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return TaskCadence.daily;
+      case 1:
+        return TaskCadence.weekly;
+      case 2:
+        return TaskCadence.monthly;
+      case 3:
+        return TaskCadence.never;
+      default:
+        return TaskCadence.daily;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, TaskCadence obj) {
+    switch (obj) {
+      case TaskCadence.daily:
+        writer.writeByte(0);
+      case TaskCadence.weekly:
+        writer.writeByte(1);
+      case TaskCadence.monthly:
+        writer.writeByte(2);
+      case TaskCadence.never:
+        writer.writeByte(3);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TaskCadenceAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

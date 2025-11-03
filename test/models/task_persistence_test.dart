@@ -161,6 +161,7 @@ void main() {
         title: 'New Task',
         energyReward: 10,
         category: TaskCategory.selfCare,
+        cadence: TaskCadence.daily,
         date: testDay.date,
       );
 

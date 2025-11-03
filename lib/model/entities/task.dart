@@ -10,6 +10,9 @@ class Task extends HiveObject {
   @HiveField(1)
   String title;
 
+  @HiveField(2)
+  TaskCadence cadence;
+
   @HiveField(3)
   int energyReward;
 
@@ -29,6 +32,7 @@ class Task extends HiveObject {
     required this.id,
     required this.title,
     required this.energyReward,
+    this.cadence = TaskCadence.never,
     this.isCompleted = false,
     this.completedAt,
     required this.category,
@@ -39,6 +43,7 @@ class Task extends HiveObject {
     required String title,
     required int energyReward,
     required TaskCategory category,
+    required TaskCadence cadence,
   }) {
     final now = DateTime.now();
     return Task(
@@ -46,6 +51,7 @@ class Task extends HiveObject {
       title: title,
       energyReward: energyReward,
       category: category,
+      cadence: cadence,
       createdDate: now,
     );
   }
@@ -71,4 +77,16 @@ enum TaskCategory {
   exercise,
   @HiveField(3)
   mindfulness,
+}
+
+@HiveType(typeId: 10)
+enum TaskCadence {
+  @HiveField(0)
+  daily,
+  @HiveField(1)
+  weekly,
+  @HiveField(2)
+  monthly,
+  @HiveField(3)
+  never,
 }

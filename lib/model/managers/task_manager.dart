@@ -35,8 +35,8 @@ class TaskManager extends BaseManager {
       _isTimeTravel = false;
       _currentDay = _dateTimeService.getCurrentDate();
 
+      await TaskService.addRecurringTasksToCurrentDay();
       _tasks = await TaskService.getCurrentDayTasks();
-
       debugPrint('TaskManager: Loaded ${_tasks.length} tasks');
       for (var task in _tasks) {
         debugPrint('Task: ${task.title} (${task.id})');
@@ -114,7 +114,8 @@ class TaskManager extends BaseManager {
   Future<void> createTask(
     String title,
     int energyReward,
-    TaskCategory category, {
+    TaskCategory category,
+    TaskCadence cadence, {
     DateTime? date,
   }) async {
     debugPrint('TaskManager: Creating task: $title');
@@ -124,6 +125,7 @@ class TaskManager extends BaseManager {
         title: title,
         energyReward: energyReward,
         category: category,
+        cadence: cadence,
         date: targetDate,
       );
       debugPrint('TaskManager: Created task: ${task.title} (${task.id})');

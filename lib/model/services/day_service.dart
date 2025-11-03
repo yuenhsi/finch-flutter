@@ -146,6 +146,19 @@ class DayService {
     await saveDay(day);
   }
 
+  static Future<void> maybeAddTaskToDay(DateTime date, Task task) async {
+    debugPrint('DayService: Adding task ${task.id} to date: $date');
+    final day = await getOrCreate(date);
+    if (day.dailyTasks.any((t) => t.id == task.id)) {
+      debugPrint('DayService: Task ${task.id} already exists in day ${day.id}, skipping add');
+      return;
+    } else {
+      task.reset();
+      day.dailyTasks.add(task);
+      await saveDay(day);
+    }
+  }
+
   static Future<void> updateTaskInDay(DateTime date, Task task) async {
     debugPrint('DayService: Updating task ${task.id} in date: $date');
     final day = await getOrCreate(date);

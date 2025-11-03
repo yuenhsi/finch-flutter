@@ -37,6 +37,7 @@ void main() {
         title: 'New Task',
         energyReward: 10,
         category: TaskCategory.selfCare,
+        cadence: TaskCadence.never,
       );
       
       expect(task.title, equals('New Task'));

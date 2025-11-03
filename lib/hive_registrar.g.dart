@@ -19,6 +19,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(PetGrowthStageAdapter());
     registerAdapter(RainbowStonesAdapter());
     registerAdapter(TaskAdapter());
+    registerAdapter(TaskCadenceAdapter());
     registerAdapter(TaskCategoryAdapter());
     registerAdapter(UserAdapter());
   }

@@ -69,6 +69,7 @@ class _TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   TaskCategory _selectedCategory = TaskCategory.productivity;
+  TaskCadence _selectedCadence = TaskCadence.never;
 
   @override
   void dispose() {
@@ -90,6 +91,7 @@ class _TaskFormState extends State<TaskForm> {
         title,
         5, // Default energy reward
         _selectedCategory,
+        _selectedCadence,
         date: targetDate,
       );
 
@@ -182,6 +184,33 @@ class _TaskFormState extends State<TaskForm> {
                 }
               },
             ),
+            SizedBox(height: AppTheme.spacing.medium),
+
+            DropdownButtonFormField<TaskCadence>(
+              value: _selectedCadence,
+              decoration: InputDecoration(
+                labelText: 'Cadence',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.radius.medium),
+                ),
+                filled: true,
+                fillColor: AppTheme.colors.surface,
+              ),
+              items:
+                  TaskCadence.values.map((cadence) {
+                    return DropdownMenuItem(
+                      value: cadence,
+                      child: Text(_getCadenceName(cadence)),
+                    );
+                  }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedCadence = value;
+                  });
+                }
+              },
+            ),
             SizedBox(height: AppTheme.spacing.large),
 
             ChunkyButton(
@@ -209,6 +238,19 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 }
+
+  String _getCadenceName(TaskCadence cadence) {
+    switch (cadence) {
+      case TaskCadence.daily:
+        return 'Daily';
+      case TaskCadence.weekly:
+        return 'Weekly';
+      case TaskCadence.monthly:
+        return 'Monthly';
+      case TaskCadence.never:
+        return 'Never';
+    }
+  }
 
 void showTaskFormDialog(BuildContext context, {VoidCallback? onTaskAdded}) {
   showDialog(

@@ -271,12 +271,14 @@ void main() {
         title: 'Task 1',
         energyReward: 5,
         category: TaskCategory.productivity,
+        cadence: TaskCadence.never,
       );
 
       final task2 = Task.create(
         title: 'Task 2',
         energyReward: 10,
         category: TaskCategory.selfCare,
+        cadence: TaskCadence.never,
       );
 
       testDay.dailyTasks.add(task1);
